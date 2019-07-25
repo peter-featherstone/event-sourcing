@@ -1,5 +1,5 @@
-from ..base import Base
+from service.models import Model
 
 
-class Customer(Base):
+class Customer(Model):
     pass
