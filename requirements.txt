@@ -1,0 +1,8 @@
+alembic
+flask
+flask_sqlalchemy
+gunicorn
+pytest
+pytest-cov
+psycopg2
+sqlalchemy
