@@ -1,35 +1,23 @@
 class BaseRepository:
 
-    _model = None
+    _entity = None
 
     def __init__(self, db):
-        """Instantiate the repository with a db session."""
         self._db = db
 
-    def get(self, _id, **kwargs):
-        # TODO: Get model from it's events.
-        pass
+    def get(self, _id):
+        return self._query().first()
 
-    def all(self, **kwargs):
-        """Return all _models.
+    def all(self, filters=None):
+        return self._query(filters=filters).all()
 
-        Returns:
-            obj: An EntityList object.
-        """
-        return self._build_list(self._query(**kwargs))
+    def _query(self, filters=None):
+        query = self._db.query(self._entity)
 
-    def _query(self, **kwargs):
-        query = self._db.query(self._model)
-
-        if kwargs.get('filters'):
-            for query_filter in kwargs.get('filters'):
-                query = query.filter(query_filter)
+        for query_filter in filters or []:
+            query = query.filter(query_filter)
 
         return query
-
-    def _build_list(self, query):
-
-        return query.all()
 
     def delete(self, entity):
         # TODO: Commit a delete event.
