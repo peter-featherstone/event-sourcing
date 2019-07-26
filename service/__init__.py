@@ -1,4 +1,5 @@
 from flask import Flask
+
 from service.repos.database import db
 
 app = Flask(__name__)

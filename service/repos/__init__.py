@@ -1,5 +1,5 @@
-from .database import db
 from .customer import CustomerRepository
+from .database import db
 
 
 def get_customer_repo():
