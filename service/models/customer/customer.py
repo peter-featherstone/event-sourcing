@@ -1,4 +1,4 @@
-from service.models import Model
+from ..model import Model
 from .events import ChangeJob
 from .events import ChangeName
 from .events import ChangeSalary
