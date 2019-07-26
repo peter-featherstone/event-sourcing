@@ -1,5 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
+
     <h1>Event Sourcing</h1>
+    <hr />
+
+    <h2>The Customer</h2>
+
+    <table class="table table-responsive table-bordered mt-3 mb-3">
+        <tr>
+            <td>Name:</td>
+            <td>{{ customer.name }}</td>
+        </tr>
+    </table>
+
+    <h2>The Events</h2>
+
+    <table class="table table-responsive table-bordered mt-3 mb-3">
+        <tr>
+            <td>Created</td>
+            <td>Entity</td>
+            <td>Event</td>
+            <td>Data</td>
+            <td>User ID</td>
+        </tr>
+        {% for event in customer.events %}
+            <tr>
+                <td>{{ event.created }}</td>
+                <td>{{ event.aggregate_type }}</td>
+                <td>{{ event.event_type }}</td>
+                <td>{{ event.data }}</td>
+                <td>{{ event.user_id }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}

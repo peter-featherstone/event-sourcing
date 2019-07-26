@@ -2,4 +2,6 @@ from service.models import Model
 
 
 class Customer(Model):
-    pass
+
+    def _apply_event(self, event):
+        self.name = event.data['name']

@@ -14,3 +14,6 @@ RUN apk add --no-cache --virtual .build-deps \
     apk --purge del .build-deps && rm requirements.txt
 
 ADD ./service /service
+
+WORKDIR /service
+ENV PYTHONPATH /

@@ -1,7 +1,5 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from service.repos.database import db
 
 app = Flask(__name__)
 
@@ -12,3 +10,4 @@ db.init_app(app)
 
 
 import service.views.customer
+import service.views.main
