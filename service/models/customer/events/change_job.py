@@ -1,7 +1,7 @@
 from service.models.event import Event
 
 
-class ChangeName(Event):
+class ChangeJob(Event):
 
     def apply(self, customer):
-        customer.name = self.data['name']
+        customer.job = self.data['job']
