@@ -1,6 +1,6 @@
-from .customer import CustomerRepository
+from .employee import EmployeeRepository
 from .database import db
 
 
-def get_customer_repo():
-    return CustomerRepository(db=db.session)
+def get_employee_repo():
+    return EmployeeRepository(db=db.session)

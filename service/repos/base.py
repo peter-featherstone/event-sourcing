@@ -61,8 +61,7 @@ class BaseRepository:
                 aggregate_id=entity_event.aggregate_id,
                 aggregate_type=entity_event.aggregate_type,
                 event_type=entity_event.event_type,
-                data=entity_event.data,
-                user_id=entity_event.user_id,
+                data=entity_event.data
             )
 
             self._db.add(event)
@@ -84,8 +83,7 @@ class BaseRepository:
             data=event.data,
             event_type=event.event_type,
             aggregate_id=event.aggregate_id,
-            aggregate_type=event.aggregate_type,
-            user_id=event.user_id,
+            aggregate_type=event.aggregate_type
         )
 
 

@@ -14,13 +14,12 @@ class Model:
     def _apply_event(self, event):
         event.apply(self)
 
-    def _add_event(self, event_cls, user_id, **kwargs):
+    def _add_event(self, event_cls, **kwargs):
         event = event_cls(
             created=datetime.now(),
             aggregate_id=self._id,
             aggregate_type=self.__class__.__name__,
             event_type=event_cls.__name__,
-            user_id=user_id,
             data=kwargs
         )
 

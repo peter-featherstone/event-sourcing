@@ -13,4 +13,3 @@ class EventSchema(db.Model):
     aggregate_id = db.Column(db.Integer)
     aggregate_type = db.Column(db.String)
     data = db.Column(db.JSON)
-    user_id = db.Column(db.Integer)

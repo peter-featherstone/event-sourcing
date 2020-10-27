@@ -10,5 +10,5 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 
-import service.views.customer
+import service.views.employee
 import service.views.main
