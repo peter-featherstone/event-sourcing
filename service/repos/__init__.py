@@ -1,5 +1,5 @@
-from .employee import EmployeeRepository
 from .database import db
+from .employee import EmployeeRepository
 
 
 def get_employee_repo():

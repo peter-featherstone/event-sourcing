@@ -1,9 +1,5 @@
 import random
-
-from flask import redirect
-from flask import render_template
-from flask import request
-from flask import url_for
+from flask import redirect, render_template, request, url_for
 
 from service import app
 from service.repos import get_employee_repo
@@ -29,8 +25,6 @@ def employees():
 def employee_update(employee_id):
     employee_repo = get_employee_repo()
     employee = employee_repo.get(_id=employee_id)
-
-    employee_id = random.randint(1, 101)
 
     if request.form['job']:
         employee.change_job(job=request.form['job'])

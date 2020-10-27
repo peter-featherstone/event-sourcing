@@ -1,7 +1,5 @@
+from .events import ChangeJob, ChangeName, ChangeSalary
 from ..model import Model
-from .events import ChangeJob
-from .events import ChangeName
-from .events import ChangeSalary
 
 
 class Employee(Model):
