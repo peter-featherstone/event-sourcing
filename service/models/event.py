@@ -38,4 +38,4 @@ class Event:
         Args:
             model: The model to apply the changes to.
         """
-        raise NotImplemented('All events must implement an apply method.')
+        raise NotImplementedError('All events must implement an apply method.')

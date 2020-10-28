@@ -23,7 +23,7 @@ def employee(employee_id):
     return render_template('employee.html', employee=employee)
 
 
-@app.route('/employees/', methods=['GET'])
+@app.route('/employees', methods=['GET'])
 def employees():
     """UI endpoint to display a list of all employees in the system."""
     employee_repo = get_employee_repo()
