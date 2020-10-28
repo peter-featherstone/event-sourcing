@@ -1,6 +1,7 @@
 alembic
 flask
 flask_sqlalchemy
+freezegun
 gunicorn
 pytest
 pytest-cov

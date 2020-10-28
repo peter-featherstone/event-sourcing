@@ -39,7 +39,7 @@ def create_employee():
     employee.create(
         name=request.form['name'],
         job=request.form['job'],
-        salary=request.form['salary']
+        salary=int(request.form['salary'])
     )
 
     employee_repo = get_employee_repo()
@@ -63,7 +63,7 @@ def update_employee(employee_id):
         employee.change_name(name=request.form['name'])
 
     if request.form['salary']:
-        employee.change_salary(salary=request.form['salary'])
+        employee.change_salary(salary=int(request.form['salary']))
 
     employee_repo.save(entity=employee)
 

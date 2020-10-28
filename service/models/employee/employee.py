@@ -53,6 +53,8 @@ class Employee(Model):
         Args:
             salary: The new salary for the employee.
         """
+        self.salary = salary
+
         self._add_event(ChangeSalary, salary=salary)
 
     def create(self, name: str, job: str, salary: int) -> None:

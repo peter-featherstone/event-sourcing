@@ -1,7 +1,7 @@
 """Collection of base repository code."""
 import importlib
 from collections import defaultdict
-from typing import List
+from typing import List, Optional
 from uuid import UUID
 
 from service.models.event import Event
@@ -43,7 +43,7 @@ class BaseRepository:
         """
         self._db = db
 
-    def get(self, id_: UUID) -> Model:
+    def get(self, id_: UUID) -> Optional[Model]:
         """Queries for a particular model by it's unique id.
 
         Handles the querying of all events for a specific model and applying
@@ -55,17 +55,16 @@ class BaseRepository:
         Returns:
             An instantiated model with all it's events applied.
         """
-        return self._entity(
-            id_=id_,
-            events=[
-                self._translate_event(event) for event in self._query(
-                    filters=[
-                        EventSchema.model_id == id_,
-                        EventSchema.model_type == self._entity.__name__
-                    ]
-                ).all()
-            ]
-        )
+        events = [
+            self._translate_event(event) for event in self._query(
+                filters=[
+                    EventSchema.model_id == id_,
+                    EventSchema.model_type == self._entity.__name__
+                ]
+            ).all()
+        ]
+
+        return self._entity(id_=id_, events=events) if events else None
 
     def all(self) -> EntityList:
         """Queries for all models of a particular type in the system.
