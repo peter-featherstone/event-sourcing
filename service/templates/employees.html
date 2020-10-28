@@ -11,7 +11,7 @@
             <td>Job Title</td>
             <td>Salary</td>
         </tr>
-        {% for employee in employees.entities %}
+        {% for employee in employees.models %}
             <tr>
                 <td><a href="{{ url_for('employee', employee_id=employee.id) }}">{{ employee.id }}</a></td>
                 <td><a href="{{ url_for('employee', employee_id=employee.id) }}">{{ employee.name }}</a></td>
@@ -26,7 +26,7 @@
     <table class="table table-bordered mt-3 mb-3">
         <tr>
             <td>Created</td>
-            <td>Entity</td>
+            <td>Model</td>
             <td>Employee ID</td>
             <td>Event</td>
             <td>Data</td>

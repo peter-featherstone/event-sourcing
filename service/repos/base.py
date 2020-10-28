@@ -9,31 +9,31 @@ from service.models.model import Model
 from service.models.schema.event import EventSchema
 
 
-class EntityList:
-    """Definition of an EntityList for representing data from event store."""
+class ModelList:
+    """Definition of a ModelList for representing data from event store."""
 
-    def __init__(self, entities: List[Model], events: List[Event]) -> None:
-        """Instantiates the entity list with all entities and events.
+    def __init__(self, models: List[Model], events: List[Event]) -> None:
+        """Instantiates the model list with all models and events.
 
         Provides the instantiated models themselves but also a list of all
         events in order across all models.
 
         Args:
-            entities: An list of all instantiated model with events applied.
-            events: An list of all events in order across all models.
+            models: A list of all instantiated model with events applied.
+            events: A list of all events in order across all models.
         """
-        self.entities = entities
+        self.models = models
         self.events = events
 
 
 class BaseRepository:
     """Definition of a base repository to be extended for specific models.
 
-    _entity needs to be overwritten in each extending class with a reference
+    _model needs to be overwritten in each extending class with a reference
     to the specific model it wants to query. One repository per model.
     """
 
-    _entity: Model.__class__ = None
+    _model: Model.__class__ = None
 
     def __init__(self, db) -> None:
         """Initialise the repository with a live db session.
@@ -59,14 +59,14 @@ class BaseRepository:
             self._translate_event(event) for event in self._query(
                 filters=[
                     EventSchema.model_id == id_,
-                    EventSchema.model_type == self._entity.__name__
+                    EventSchema.model_type == self._model.__name__
                 ]
             ).all()
         ]
 
-        return self._entity(id_=id_, events=events) if events else None
+        return self._model(id_=id_, events=events) if events else None
 
-    def all(self) -> EntityList:
+    def all(self) -> ModelList:
         """Queries for all models of a particular type in the system.
 
         Handles the querying of all events for the models and applying
@@ -76,24 +76,24 @@ class BaseRepository:
             An list of instantiated models with all their events applied.
         """
         events = self._query(
-            filters=[EventSchema.model_type == self._entity.__name__]
+            filters=[EventSchema.model_type == self._model.__name__]
         ).all()
 
-        entity_events = defaultdict(list)
+        model_events = defaultdict(list)
         for event in events:
-            entity_events[event.model_id].append(
+            model_events[event.model_id].append(
                 self._translate_event(event)
             )
 
-        return EntityList(
-            entities=[
-                self._entity(id_=model_id, events=events)
-                for model_id, events in entity_events.items()
+        return ModelList(
+            models=[
+                self._model(id_=model_id, events=events)
+                for model_id, events in model_events.items()
             ],
             events=[self._translate_event(event) for event in events]
         )
 
-    def save(self, entity: Model) -> None:
+    def save(self, model: Model) -> None:
         """Saves an updated model back to the event store.
 
         We take all currently unsaved events on the model, build them into
@@ -101,22 +101,22 @@ class BaseRepository:
         clear the unsaved list so we don't accidentally commit changes twice.
 
         Args:
-            entity: The entity who's events need saving.
+            model: The model who's events need saving.
         """
-        for entity_event in entity.unsaved_events:
+        for model_event in model.unsaved_events:
             self._db.add(
                 EventSchema(
-                    created=entity_event.created,
-                    model_id=entity_event.model_id,
-                    model_type=entity_event.model_type,
-                    event_type=entity_event.event_type,
-                    data=entity_event.data
+                    created=model_event.created,
+                    model_id=model_event.model_id,
+                    model_type=model_event.model_type,
+                    event_type=model_event.event_type,
+                    data=model_event.data
                 )
             )
 
         self._db.commit()
 
-        entity.clear_unsaved_events()
+        model.clear_unsaved_events()
 
     def _query(self, filters: list = None):
         """Builds a database query and applies any custom filters.
@@ -155,7 +155,7 @@ class BaseRepository:
         Returns:
             Our pure python Event class that can apply model mutations.
         """
-        import_path = self._entity.__module__.split('.')
+        import_path = self._model.__module__.split('.')
         import_path.pop()
         import_path = '.'.join(import_path)
         import_path += '.events'

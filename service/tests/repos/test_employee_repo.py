@@ -79,7 +79,7 @@ def test_get_returns_fully_hydrated_model(repo):
 
 def test_all_returns_fully_hydrated_models(repo):
     """Tests that the repo gets all models and fully hydrates from events."""
-    employees = repo.all().entities
+    employees = repo.all().models
 
     assert len(employees) == 2
 
@@ -104,7 +104,7 @@ def test_saving_a_model_includes_all_events(repo):
 
     assert len(employee.unsaved_events) == 2
 
-    repo.save(entity=employee)
+    repo.save(model=employee)
 
     employee = repo.get(UUID('cae4b42f-0c64-4204-97c2-e36086ee0fbb'))
 

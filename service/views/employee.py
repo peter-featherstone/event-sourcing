@@ -43,7 +43,7 @@ def create_employee():
     )
 
     employee_repo = get_employee_repo()
-    employee_repo.save(entity=employee)
+    employee_repo.save(model=employee)
 
     flash(message=f'{employee.name} created.')
 
@@ -65,7 +65,7 @@ def update_employee(employee_id):
     if request.form['salary']:
         employee.change_salary(salary=int(request.form['salary']))
 
-    employee_repo.save(entity=employee)
+    employee_repo.save(model=employee)
 
     flash(message=f'{employee.name} updated.')
 

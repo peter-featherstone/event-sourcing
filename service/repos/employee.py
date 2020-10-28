@@ -6,4 +6,4 @@ from .base import BaseRepository
 class EmployeeRepository(BaseRepository):
     """Definition of an employee repository for querying employees."""
 
-    _entity = Employee
+    _model = Employee
