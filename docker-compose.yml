@@ -9,7 +9,23 @@ services:
       - 80:8000
     volumes:
       - ./service:/service
+    depends_on:
+      - postgres
     command: gunicorn service:app -b 0.0.0.0:8000 --reload
+
+  alembic:
+    build: .
+    volumes:
+      - ./service:/service
+    depends_on:
+      - postgres
+    entrypoint: alembic
+
+  pytest:
+    build: .
+    volumes:
+      - ./service:/service
+    entrypoint: pytest
 
   postgres:
     container_name: event-sourcing-db

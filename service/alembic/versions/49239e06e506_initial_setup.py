@@ -7,6 +7,7 @@ Create Date: 2019-07-25 15:43:57.831288
 """
 import sqlalchemy as sa
 from alembic import op
+from sqlalchemy.dialects.postgresql import UUID
 
 # revision identifiers, used by Alembic.
 revision = '49239e06e506'
@@ -21,7 +22,7 @@ def upgrade():
         sa.Column('created', sa.DateTime, nullable=False, server_default=sa.func.current_timestamp()),
         sa.Column('event_id', sa.Integer, primary_key=True, autoincrement=True),
         sa.Column('event_type', sa.String, nullable=False),
-        sa.Column('aggregate_id', sa.Integer, nullable=False),
+        sa.Column('aggregate_id', UUID(as_uuid=True), nullable=False),
         sa.Column('aggregate_type', sa.String, nullable=False),
         sa.Column('data', sa.JSON, nullable=False)
     )

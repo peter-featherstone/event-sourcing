@@ -1,20 +1,52 @@
+"""Internal pure python model representation of an employee."""
+from service.models.model import Model
 from .events import ChangeJob, ChangeName, ChangeSalary
-from ..model import Model
 
 
 class Employee(Model):
+    """Definition of the employee model."""
 
-    def __init__(self, name=None, job=None, **kwargs):
+    def __init__(
+        self,
+        name: str = None,
+        job: str = None,
+        salary: int = None,
+        **kwargs
+    ) -> None:
+        """Instantiates an Employee object with all required data.
+
+        Args:
+            name: Initial name to set on the employee.
+            job: Initial job title to set on the employee.
+            salary: Initial salary to set on the employee.
+            kwargs: See base definition of Model for extra args.
+        """
         self.name = name
         self.job = job
+        self.salary = salary
 
         super().__init__(**kwargs)
 
-    def change_name(self, name):
+    def change_name(self, name: str) -> None:
+        """Adds a new change name event to the employee.
+
+        Args:
+            name: The new name for the employee.
+        """
         self._add_event(ChangeName, name=name)
 
-    def change_job(self, job):
+    def change_job(self, job: str) -> None:
+        """Adds a new change job event to the employee.
+
+        Args:
+            job: The new title of the job for the employee.
+        """
         self._add_event(ChangeJob, job=job)
 
-    def change_salary(self, salary):
+    def change_salary(self, salary: int) -> None:
+        """Adds a new change salary event to the employee.
+
+        Args:
+            salary: The new salary for the employee.
+        """
         self._add_event(ChangeSalary, salary=salary)

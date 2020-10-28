@@ -1,10 +1,12 @@
 install:
 	docker-compose build
-	docker-compose up postgres
-	docker-compose run service sh -c 'alembic upgrade head'
+	docker-compose run alembic upgrade head
 
 run:
-	docker-compose up --force-recreate
+	docker-compose up service
 
 test:
-	docker-compose run service sh -c 'pytest -vv --cov=./ tests'
+	docker-compose run pytest -vv --cov=./ tests
+
+migrate:
+	docker-compose run alembic upgrade head

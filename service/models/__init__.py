@@ -1,2 +1,1 @@
-from .employee.employee import Employee
-from .model import Model
+"""Module to contain all our pure python and persistence schema models."""

@@ -2,19 +2,21 @@
 
 {% block content %}
 
-    <h3>Employees</h3>
+    <h3>Employees <a href="{{ url_for('create_employee_form') }}" class="btn btn-primary btn-sm">Add</a></h3>
 
     <table class="table table-bordered mt-3 mb-3">
         <tr>
+            <td>ID</td>
             <td>Name</td>
             <td>Job Title</td>
             <td>Salary</td>
         </tr>
         {% for employee in employees.entities %}
             <tr>
-                <td><a href="{{ url_for('employee', employee_id=employee._id) }}">{{ employee.name }}</a></td>
-                <td>{{ employee.job }}</td>
-                <td>£{{ '{:,.0f}'.format(employee.salary) }}</td>
+                <td><a href="{{ url_for('employee', employee_id=employee.id) }}">{{ employee.id }}</a></td>
+                <td><a href="{{ url_for('employee', employee_id=employee.id) }}">{{ employee.name }}</a></td>
+                <td><a href="{{ url_for('employee', employee_id=employee.id) }}">{{ employee.job }}</a></td>
+                <td><a href="{{ url_for('employee', employee_id=employee.id) }}">{{ employee.salary }}</a></td>
             </tr>
         {% endfor %}
     </table>

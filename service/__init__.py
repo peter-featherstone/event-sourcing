@@ -1,3 +1,4 @@
+"""Setup code for the application itself."""
 from flask import Flask
 
 from service.repos.database import db
