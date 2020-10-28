@@ -22,14 +22,14 @@ def upgrade():
         sa.Column('created', sa.DateTime, nullable=False, server_default=sa.func.current_timestamp()),
         sa.Column('event_id', sa.Integer, primary_key=True, autoincrement=True),
         sa.Column('event_type', sa.String, nullable=False),
-        sa.Column('aggregate_id', UUID(as_uuid=True), nullable=False),
-        sa.Column('aggregate_type', sa.String, nullable=False),
+        sa.Column('model_id', UUID(as_uuid=True), nullable=False),
+        sa.Column('model_type', sa.String, nullable=False),
         sa.Column('data', sa.JSON, nullable=False)
     )
 
     op.create_index(
-        'ix_aggregate', 'events',
-        ['aggregate_id', 'aggregate_type']
+        'ix_model', 'events',
+        ['model_id', 'model_type']
     )
 
 

@@ -30,8 +30,8 @@
         {% for event in employee.events %}
             <tr>
                 <td>{{ event.created }}</td>
-                <td>{{ event.aggregate_type }}</td>
-                <td>{{ event.aggregate_id }}</td>
+                <td>{{ event.model_type }}</td>
+                <td>{{ event.model_id }}</td>
                 <td>{{ event.event_type }}</td>
                 <td>{{ event.data }}</td>
             </tr>

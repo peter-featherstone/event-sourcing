@@ -13,8 +13,8 @@ def test_apply_method_must_be_implemented():
     event = Event(
         created=datetime(2020, 6, 6, 13, 23, 14),
         event_type='ChangeSalary',
-        aggregate_id=UUID('c1736b8d-2064-47ac-861c-93b4fc2fcbd2'),
-        aggregate_type='Employee',
+        model_id=UUID('c1736b8d-2064-47ac-861c-93b4fc2fcbd2'),
+        model_type='Employee',
         data={'salary': 19000}
     )
 

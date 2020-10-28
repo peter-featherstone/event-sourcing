@@ -11,8 +11,8 @@ class Event:
         created: datetime,
         data: dict,
         event_type: str,
-        aggregate_id: UUID,
-        aggregate_type: str
+        model_id: UUID,
+        model_type: str
     ) -> None:
         """Instantiates an Event object with all required data.
 
@@ -20,14 +20,14 @@ class Event:
             created: The time that the event was created.
             data: Any data contained in the event payload.
             event_type: The internal name of the event.
-            aggregate_id: A uuid4 identifier globally unique to all aggregates.
-            aggregate_type: The internal model of the aggregate to be mutates.
+            model_id: A uuid4 identifier globally unique to all models.
+            model_type: The internal model of the model to be mutates.
         """
         self.created = created
         self.data = data
         self.event_type = event_type
-        self.aggregate_id = aggregate_id
-        self.aggregate_type = aggregate_type
+        self.model_id = model_id
+        self.model_type = model_type
 
     def apply(self, model: 'Model') -> None:
         """Applies the event to a given model instance.

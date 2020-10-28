@@ -50,8 +50,8 @@ class Model:
         self.unsaved_events.append(
             event_cls(
                 created=datetime.now(),
-                aggregate_id=self.id,
-                aggregate_type=self.__class__.__name__,
+                model_id=self.id,
+                model_type=self.__class__.__name__,
                 event_type=event_cls.__name__,
                 data=kwargs
             )

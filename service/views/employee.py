@@ -1,7 +1,7 @@
 """Collection of view endpoints for dealing with employees."""
 from uuid import uuid4
 
-from flask import redirect, render_template, request, url_for
+from flask import redirect, render_template, request, url_for, flash
 
 from service import app
 from service.models.employee.employee import Employee
@@ -36,18 +36,16 @@ def employees():
 def create_employee():
     """Internal endpoint used for the creation of new employees."""
     employee = Employee(id_=uuid4())
-
-    if request.form['job']:
-        employee.change_job(job=request.form['job'])
-
-    if request.form['name']:
-        employee.change_name(name=request.form['name'])
-
-    if request.form['salary']:
-        employee.change_salary(salary=request.form['salary'])
+    employee.create(
+        name=request.form['name'],
+        job=request.form['job'],
+        salary=request.form['salary']
+    )
 
     employee_repo = get_employee_repo()
     employee_repo.save(entity=employee)
+
+    flash(message=f'{employee.name} created.')
 
     return redirect(url_for('employee', employee_id=employee.id))
 
@@ -68,5 +66,7 @@ def update_employee(employee_id):
         employee.change_salary(salary=request.form['salary'])
 
     employee_repo.save(entity=employee)
+
+    flash(message=f'{employee.name} updated.')
 
     return redirect(url_for('employee', employee_id=employee_id))

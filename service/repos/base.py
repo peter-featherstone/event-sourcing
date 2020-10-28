@@ -60,8 +60,8 @@ class BaseRepository:
             events=[
                 self._translate_event(event) for event in self._query(
                     filters=[
-                        EventSchema.aggregate_id == id_,
-                        EventSchema.aggregate_type == self._entity.__name__
+                        EventSchema.model_id == id_,
+                        EventSchema.model_type == self._entity.__name__
                     ]
                 ).all()
             ]
@@ -77,22 +77,47 @@ class BaseRepository:
             An list of instantiated models with all their events applied.
         """
         events = self._query(
-            filters=[EventSchema.aggregate_type == self._entity.__name__]
+            filters=[EventSchema.model_type == self._entity.__name__]
         ).all()
 
         entity_events = defaultdict(list)
         for event in events:
-            entity_events[event.aggregate_id].append(
+            entity_events[event.model_id].append(
                 self._translate_event(event)
             )
 
         return EntityList(
             entities=[
-                self._entity(id_=aggregate_id, events=events)
-                for aggregate_id, events in entity_events.items()
+                self._entity(id_=model_id, events=events)
+                for model_id, events in entity_events.items()
             ],
             events=[self._translate_event(event) for event in events]
         )
+
+    def save(self, entity: Model) -> None:
+        """Saves an updated model back to the event store.
+
+        We take all currently unsaved events on the model, build them into
+        event schema objects ready to be saved to our event store and then
+        clear the unsaved list so we don't accidentally commit changes twice.
+
+        Args:
+            entity: The entity who's events need saving.
+        """
+        for entity_event in entity.unsaved_events:
+            self._db.add(
+                EventSchema(
+                    created=entity_event.created,
+                    model_id=entity_event.model_id,
+                    model_type=entity_event.model_type,
+                    event_type=entity_event.event_type,
+                    data=entity_event.data
+                )
+            )
+
+        self._db.commit()
+
+        entity.clear_unsaved_events()
 
     def _query(self, filters: list = None):
         """Builds a database query and applies any custom filters.
@@ -113,31 +138,6 @@ class BaseRepository:
 
         return query
 
-    def save(self, entity: Model) -> None:
-        """Saves an updated model back to the event store.
-
-        We take all currently unsaved events on the model, build them into
-        event schema objects ready to be saved to our event store and then
-        clear the unsaved list so we don't accidentally commit changes twice.
-
-        Args:
-            entity: The entity who's events need saving.
-        """
-        for entity_event in entity.unsaved_events:
-            self._db.add(
-                EventSchema(
-                    created=entity_event.created,
-                    aggregate_id=entity_event.aggregate_id,
-                    aggregate_type=entity_event.aggregate_type,
-                    event_type=entity_event.event_type,
-                    data=entity_event.data
-                )
-            )
-
-        self._db.commit()
-
-        entity.clear_unsaved_events()
-
     def _translate_event(self, event: EventSchema) -> Event:
         """Translates an event schema record to an actual Event class.
 
@@ -147,7 +147,7 @@ class BaseRepository:
 
         For now this works, and there are tests so we'll know if we broke it.
 
-        We attempt to import from the `<event.aggregate_type>/events` folder so
+        We attempt to import from the `<event.model_type>/events` folder so
         it requires event structuring to be consistent.
 
         Args:
@@ -169,6 +169,6 @@ class BaseRepository:
             created=event.created,
             data=event.data,
             event_type=event.event_type,
-            aggregate_id=event.aggregate_id,
-            aggregate_type=event.aggregate_type
+            model_id=event.model_id,
+            model_type=event.model_type
         )
