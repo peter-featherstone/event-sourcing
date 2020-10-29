@@ -47,12 +47,14 @@ class Model:
             event_cls: The particular class definition of an Event to add.
             kwargs: key=value pairs for the changes that have occurred.
         """
-        self.unsaved_events.append(
-            event_cls(
-                created=datetime.now(),
-                model_id=self.id,
-                model_type=self.__class__.__name__,
-                event_type=event_cls.__name__,
-                data=kwargs
-            )
+        event = event_cls(
+            created=datetime.now(),
+            model_id=self.id,
+            model_type=self.__class__.__name__,
+            event_type=event_cls.__name__,
+            data=kwargs
         )
+
+        event.apply(self)
+
+        self.unsaved_events.append(event)
